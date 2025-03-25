@@ -4,92 +4,118 @@ using UnityEngine;
 
 public enum RoomType
 {
-	EmptyRoom,
-	TreasureRoom,
-	TrapRoom,
-	RestRoom,
-	MonsterRoom
+    EmptyRoom,
+    TreasureRoom,
+    TrapRoom,
+    RestRoom,
+    MonsterRoom
 }
 
 public class DungeonManager : MonoBehaviour
 {
-	// 각 방에서 다음 방으로의 확률을 관리하는 딕셔너리
-	private Dictionary<RoomType, Dictionary<RoomType, float>> transitionProbabilities = new Dictionary<RoomType, Dictionary<RoomType, float>>()
-	{
-		{
-			RoomType.EmptyRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.EmptyRoom, 0.5f },
-				{ RoomType.TrapRoom, 0.5f }
-			}
-		},
-		{
-			RoomType.TrapRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.EmptyRoom, 0.3f },
-				{ RoomType.TreasureRoom, 0.2f },
-				{ RoomType.RestRoom, 0.1f },
-				{ RoomType.MonsterRoom, 0.3f },
-				{ RoomType.TrapRoom, 0.1f }
-			}
-		},
-		{
-			RoomType.TreasureRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.EmptyRoom, 0.3f },
-				{ RoomType.TrapRoom, 0.2f },
-				{ RoomType.RestRoom, 0.2f },
-				{ RoomType.MonsterRoom, 0.2f },
-				{ RoomType.TreasureRoom, 0.1f }
-			}
-		},
-		{
-			RoomType.RestRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.EmptyRoom, 0.4f },
-				{ RoomType.TrapRoom, 0.3f },
-				{ RoomType.TreasureRoom, 0.1f },
-				{ RoomType.MonsterRoom, 0.1f },
-				{ RoomType.RestRoom, 0.1f }
-			}
-		},
-		{
-			RoomType.MonsterRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.EmptyRoom, 0.2f },
-				{ RoomType.TrapRoom, 0.2f },
-				{ RoomType.TreasureRoom, 0.1f },
-				{ RoomType.RestRoom, 0.1f },
-				{ RoomType.MonsterRoom, 0.4f }
-			}
-		}
-	};
+    public Transform roomSpawnPoint; // 방이 생성될 위치
+    public List<RoomPrefab> roomPrefabs; // 방 프리팹 리스트 (인스펙터에서 설정)
+    private GameObject currentRoomInstance; // 현재 생성된 방
 
-	// 현재 방에서 다음 방을 선택하는 함수
-	public RoomType GetNextRoom(RoomType currentRoom)
-	{
-		float randomValue = Random.Range(0f, 1f);
-		float cumulativeProbability = 0f;
+    private Dictionary<RoomType, Dictionary<RoomType, float>> transitionProbabilities = new Dictionary<RoomType, Dictionary<RoomType, float>>()
+    {
+        {
+            RoomType.EmptyRoom, new Dictionary<RoomType, float>()
+            {
+                { RoomType.EmptyRoom, 0.5f },
+                { RoomType.TrapRoom, 0.5f }
+            }
+        },
+        {
+            RoomType.TrapRoom, new Dictionary<RoomType, float>()
+            {
+                { RoomType.EmptyRoom, 0.3f },
+                { RoomType.TreasureRoom, 0.2f },
+                { RoomType.RestRoom, 0.1f },
+                { RoomType.MonsterRoom, 0.3f },
+                { RoomType.TrapRoom, 0.1f }
+            }
+        },
+        {
+            RoomType.TreasureRoom, new Dictionary<RoomType, float>()
+            {
+                { RoomType.EmptyRoom, 0.3f },
+                { RoomType.TrapRoom, 0.2f },
+                { RoomType.RestRoom, 0.2f },
+                { RoomType.MonsterRoom, 0.2f },
+                { RoomType.TreasureRoom, 0.1f }
+            }
+        },
+        {
+            RoomType.RestRoom, new Dictionary<RoomType, float>()
+            {
+                { RoomType.EmptyRoom, 0.4f },
+                { RoomType.TrapRoom, 0.3f },
+                { RoomType.TreasureRoom, 0.1f },
+                { RoomType.MonsterRoom, 0.1f },
+                { RoomType.RestRoom, 0.1f }
+            }
+        },
+        {
+            RoomType.MonsterRoom, new Dictionary<RoomType, float>()
+            {
+                { RoomType.EmptyRoom, 0.2f },
+                { RoomType.TrapRoom, 0.2f },
+                { RoomType.TreasureRoom, 0.1f },
+                { RoomType.RestRoom, 0.1f },
+                { RoomType.MonsterRoom, 0.4f }
+            }
+        }
+    };
 
-		// 확률에 맞춰 다음 방을 선택
-		foreach (var room in transitionProbabilities[currentRoom])
-		{
-			cumulativeProbability += room.Value;
-			if (randomValue <= cumulativeProbability)
-			{
-				return room.Key;
-			}
-		}
+    public RoomType GetNextRoom(RoomType currentRoom)
+    {
+        float randomValue = Random.Range(0f, 1f);
+        float cumulativeProbability = 0f;
 
-		return currentRoom;  // 이건 드물게 발생 (혹시라도 확률 합이 1이 아닐 경우)
-	}
+        foreach (var room in transitionProbabilities[currentRoom])
+        {
+            cumulativeProbability += room.Value;
+            if (randomValue <= cumulativeProbability)
+            {
+                return room.Key;
+            }
+        }
+        return currentRoom;
+    }
 
+    public void GenerateNextRoom(RoomType currentRoom)
+    {
+        RoomType nextRoomType = GetNextRoom(currentRoom);
 
-	// 게임 시작시 예시
-	void Start()
-	{
-		RoomType currentRoom = RoomType.EmptyRoom;  // 예시: 빈 방에서 시작
-		RoomType nextRoom = GetNextRoom(currentRoom);
-		Debug.Log("다음 방: " + nextRoom);
-	}
+        // 현재 방 제거
+        if (currentRoomInstance != null)
+        {
+            Destroy(currentRoomInstance);
+        }
+
+        // 방 프리팹 찾기
+        RoomPrefab roomPrefab = roomPrefabs.Find(r => r.roomType == nextRoomType);
+        if (roomPrefab != null)
+        {
+            currentRoomInstance = Instantiate(roomPrefab.prefab, roomSpawnPoint.position, Quaternion.identity);
+            Debug.Log("생성된 방: " + nextRoomType);
+        }
+        else
+        {
+            Debug.LogError("프리팹을 찾을 수 없음: " + nextRoomType);
+        }
+    }
+
+    void Start()
+    {
+        GenerateNextRoom(RoomType.EmptyRoom);
+    }
+}
+
+[System.Serializable]
+public class RoomPrefab
+{
+    public RoomType roomType;
+    public GameObject prefab;
 }
