@@ -13,77 +13,28 @@ public enum RoomType
 
 public class DungeonManager : MonoBehaviour
 {
-	public Transform easyRoomSpawnPoint; // 쉬운 루트 방 스폰 위치
-	public Transform hardRoomSpawnPoint; // 어려운 루트 방 스폰 위치
-	public List<RoomPrefab> roomPrefabs; // 방 프리팹 리스트 (인스펙터에서 설정)
-
-	private GameObject currentRoomInstance; // 현재 생성된 방
-	private bool isHardRoute = false; // 플레이어가 선택한 루트 (false: 쉬운 루트, true: 어려운 루트)
+	public Transform roomSpawnPoint; 
+	public List<RoomPrefab> roomPrefabs; 
+	private GameObject currentRoomInstance; 
+	private RoomType currentRoom = RoomType.EmptyRoom; 
 
 	private Dictionary<RoomType, Dictionary<RoomType, float>> easyRouteProbabilities = new Dictionary<RoomType, Dictionary<RoomType, float>>()
 	{
-		{
-			RoomType.EmptyRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.RestRoom, 0.6f },
-				{ RoomType.TreasureRoom, 0.4f }
-			}
-		},
-		{
-			RoomType.RestRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.EmptyRoom, 0.5f },
-				{ RoomType.TreasureRoom, 0.3f },
-				{ RoomType.MonsterRoom, 0.2f }	
-			}
-		}
+		{ RoomType.EmptyRoom, new Dictionary<RoomType, float>() { { RoomType.RestRoom, 0.6f }, { RoomType.TreasureRoom, 0.4f } } },
+		{ RoomType.RestRoom, new Dictionary<RoomType, float>() { { RoomType.EmptyRoom, 0.5f }, { RoomType.TreasureRoom, 0.3f }, { RoomType.RestRoom, 0.2f } } },
+		{ RoomType.TreasureRoom, new Dictionary<RoomType, float>() { { RoomType.RestRoom, 0.5f }, { RoomType.EmptyRoom, 0.3f }, { RoomType.TreasureRoom, 0.2f } } },
 	};
 
 	private Dictionary<RoomType, Dictionary<RoomType, float>> hardRouteProbabilities = new Dictionary<RoomType, Dictionary<RoomType, float>>()
 	{
-		{
-			RoomType.EmptyRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.MonsterRoom, 0.5f },
-				{ RoomType.TrapRoom, 0.5f }
-			}
-		},
-		{
-			RoomType.MonsterRoom, new Dictionary<RoomType, float>()
-			{
-				{ RoomType.TrapRoom, 0.3f },
-				{ RoomType.TreasureRoom, 0.2f },
-				{ RoomType.MonsterRoom, 0.5f }
-			}
-		}
+		{ RoomType.EmptyRoom, new Dictionary<RoomType, float>() { { RoomType.MonsterRoom, 0.6f }, { RoomType.TrapRoom, 0.4f } } },
+		{ RoomType.MonsterRoom, new Dictionary<RoomType, float>() { { RoomType.TrapRoom, 0.5f }, { RoomType.TreasureRoom, 0.3f }, { RoomType.MonsterRoom, 0.2f } } },
+		{ RoomType.TrapRoom, new Dictionary<RoomType, float>() { { RoomType.MonsterRoom, 0.5f }, { RoomType.EmptyRoom, 0.3f }, { RoomType.TrapRoom, 0.2f } } },
 	};
 
-	public RoomType GetNextRoom(RoomType currentRoom, bool isHardRoute)
-	{
-		Dictionary<RoomType, Dictionary<RoomType, float>> transitionProbabilities =
-			isHardRoute ? hardRouteProbabilities : easyRouteProbabilities;
-
-		if (!transitionProbabilities.ContainsKey(currentRoom))
-			return currentRoom;
-
-		float randomValue = Random.Range(0f, 1f);
-		float cumulativeProbability = 0f;
-
-		foreach (var room in transitionProbabilities[currentRoom])
-		{
-			cumulativeProbability += room.Value;
-			if (randomValue <= cumulativeProbability)
-			{
-				return room.Key;
-			}
-		}
-		return currentRoom;
-	}
-
-	public void GenerateNextRoom(RoomType currentRoom, bool isHardRoute)
+	public void GenerateNextRoom(bool isHardRoute)
 	{
 		RoomType nextRoomType = GetNextRoom(currentRoom, isHardRoute);
-		Transform spawnPoint = isHardRoute ? hardRoomSpawnPoint : easyRoomSpawnPoint;
 
 		if (currentRoomInstance != null)
 		{
@@ -93,7 +44,8 @@ public class DungeonManager : MonoBehaviour
 		RoomPrefab roomPrefab = roomPrefabs.Find(r => r.roomType == nextRoomType);
 		if (roomPrefab != null)
 		{
-			currentRoomInstance = Instantiate(roomPrefab.prefab, spawnPoint.position, Quaternion.identity);
+			currentRoomInstance = Instantiate(roomPrefab.prefab, roomSpawnPoint.position, Quaternion.identity);
+			currentRoom = nextRoomType; // 현재 방 업데이트
 			Debug.Log($"생성된 방: {nextRoomType}, 루트: {(isHardRoute ? "어려운" : "쉬운")}");
 		}
 		else
@@ -102,21 +54,27 @@ public class DungeonManager : MonoBehaviour
 		}
 	}
 
-	public void PlayerChoseEasyRoute()
+	private RoomType GetNextRoom(RoomType currentRoom, bool isHardRoute)
 	{
-		isHardRoute = false;
-		GenerateNextRoom(RoomType.EmptyRoom, isHardRoute);
-	}
+		Dictionary<RoomType, float> probabilities = isHardRoute ? hardRouteProbabilities[currentRoom] : easyRouteProbabilities[currentRoom];
 
-	public void PlayerChoseHardRoute()
-	{
-		isHardRoute = true;
-		GenerateNextRoom(RoomType.EmptyRoom, isHardRoute);
+		float randomValue = Random.Range(0f, 1f);
+		float cumulativeProbability = 0f;
+
+		foreach (var room in probabilities)
+		{
+			cumulativeProbability += room.Value;
+			if (randomValue <= cumulativeProbability)
+			{
+				return room.Key;
+			}
+		}
+		return currentRoom; // 확률 오류 방지
 	}
 
 	void Start()
 	{
-		GenerateNextRoom(RoomType.EmptyRoom, isHardRoute);
+		GenerateNextRoom(false); // 시작은 쉬운 방
 	}
 }
 
