@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 movement;
     private Animator animator;
     public bool canMove = true;
+    private bool facingRight = true;
 
     void Start()
     {
@@ -32,10 +33,22 @@ public class PlayerController : MonoBehaviour
 
             // 입력에 따른 방향 계산
             movement = new Vector2(moveX, moveY).normalized;
+            animator.SetBool("isRunning", movement.sqrMagnitude > 0);
+
+            // 캐릭터 방향 회전
+            if (moveX > 0 && !facingRight)
+            {
+                Flip();
+            }
+            else if (moveX < 0 && facingRight)
+            {
+                Flip();
+            }
         }
         else
         {
             movement = Vector2.zero;
+            animator.SetBool("isRunning", false);
         }
     }
 
@@ -53,5 +66,13 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = movement * moveSpeed;
+    }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 }
