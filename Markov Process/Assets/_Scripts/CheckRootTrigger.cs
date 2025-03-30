@@ -1,17 +1,17 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CheckRootTrigger : MonoBehaviour
 {
-	[SerializeField] private bool isHardRoute; // ÀÌ Æ®¸®°Å°¡ ¾î·Á¿î ·çÆ®ÀÎÁö ¿©ºÎ
+    [SerializeField] private bool isHardRoute; // ì´ íŠ¸ë¦¬ê±°ê°€ ì–´ë ¤ìš´ ë£¨íŠ¸ì¸ì§€ ì—¬ë¶€
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"{other.name}ÀÌ(°¡) {gameObject.name} Æ®¸®°Å¿¡ °¨ÁöµÊ"); // ·Î±× Ãß°¡
+        Debug.Log($"{other.name}ì´(ê°€) {gameObject.name} íŠ¸ë¦¬ê±°ì— ê°ì§€ë¨"); // ë¡œê·¸ ì¶”ê°€
         if (other.CompareTag("Player"))
         {
-            Debug.Log("ÇÃ·¹ÀÌ¾î °¨ÁöµÊ! ´ÙÀ½ ¹æ »ı¼º ½ÃÀÛ");
+            Debug.Log("í”Œë ˆì´ì–´ ê°ì§€ë¨! ë‹¤ìŒ ë°© ìƒì„± ì‹œì‘");
             DungeonManager dungeonManager = FindObjectOfType<DungeonManager>();
             if (dungeonManager != null)
             {
@@ -19,7 +19,7 @@ public class CheckRootTrigger : MonoBehaviour
             }
             else
             {
-                Debug.LogError("DungeonManager¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
+                Debug.LogError("DungeonManagerë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
             }
         }
     }
