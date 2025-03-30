@@ -445,6 +445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8851482585904531912}
   - component: {fileID: 5127662674019858649}
+  - component: {fileID: 1024759574929165855}
   m_Layer: 0
   m_Name: Trap Room
   m_TagString: Untagged
@@ -522,6 +523,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1024759574929165855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7515769236090464075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d3d93f2fbc5c474bba31ee9126ce522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomType: 2
 --- !u!1001 &5330318586826300525
 PrefabInstance:
   m_ObjectHideFlags: 0

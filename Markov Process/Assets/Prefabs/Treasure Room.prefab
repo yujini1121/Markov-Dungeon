@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7164922734263964987}
   - component: {fileID: 4492357995353005648}
+  - component: {fileID: 3149021632167170968}
   m_Layer: 0
   m_Name: Treasure Room
   m_TagString: Untagged
@@ -199,6 +200,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3149021632167170968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2295274854166844050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d3d93f2fbc5c474bba31ee9126ce522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomType: 1
 --- !u!1 &6113159471582339598
 GameObject:
   m_ObjectHideFlags: 0

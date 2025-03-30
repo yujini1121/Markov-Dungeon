@@ -1,10 +1,10 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckRootTrigger : MonoBehaviour
+public class RoomTrigger : MonoBehaviour
 {
-    [SerializeField] private bool isHardRoute;
+    [SerializeField] private RoomType roomType;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -13,11 +13,11 @@ public class CheckRootTrigger : MonoBehaviour
             DungeonManager dungeonManager = FindObjectOfType<DungeonManager>();
             if (dungeonManager != null)
             {
-                dungeonManager.GenerateNextRoom(isHardRoute);
+                dungeonManager.PlayerEnteredNewRoom(roomType);
             }
             else
             {
-                Debug.LogError("DungeonManagerë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!");
+                Debug.LogError("DungeonManager¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù!");
             }
         }
     }

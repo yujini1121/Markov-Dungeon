@@ -445,6 +445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5120726402266451691}
   - component: {fileID: 8949132776985415097}
+  - component: {fileID: 4602610633207352046}
   m_Layer: 0
   m_Name: Rest Room
   m_TagString: Untagged
@@ -522,6 +523,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4602610633207352046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8770294471955974853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d3d93f2fbc5c474bba31ee9126ce522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomType: 3
 --- !u!1001 &11243670390300665
 PrefabInstance:
   m_ObjectHideFlags: 0
