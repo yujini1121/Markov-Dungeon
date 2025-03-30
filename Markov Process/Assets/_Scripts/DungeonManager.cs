@@ -74,7 +74,7 @@ public class DungeonManager : MonoBehaviour
 
 	void Start()
 	{
-		GenerateNextRoom(false); // 시작은 쉬운 방
+		//GenerateNextRoom(false); // 시작은 쉬운 방
 	}
 }
 
