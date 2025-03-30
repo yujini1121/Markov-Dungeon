@@ -230,7 +230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &914477134
 Transform:
   m_ObjectHideFlags: 0
@@ -258,7 +258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df0eb4fa8e7559c4eb5d235bcbf69ce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSpawnPoint: {fileID: 1690785263}
+  nextRoomSpawnPoint: {fileID: 0}
   roomPrefabs:
   - roomType: 0
     prefab: {fileID: 2536146289238301890, guid: a7c1b3ac7e544d948bd68fc36ca05554, type: 3}
@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 1355597112}
   - component: {fileID: 1355597115}
   - component: {fileID: 1355597114}
+  - component: {fileID: 1355597116}
   m_Layer: 0
   m_Name: Test Player
   m_TagString: Player
@@ -418,6 +419,30 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1355597116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355597111}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df0eb4fa8e7559c4eb5d235bcbf69ce4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextRoomSpawnPoint: {fileID: 1690785263}
+  roomPrefabs:
+  - roomType: 0
+    prefab: {fileID: 2536146289238301890, guid: a7c1b3ac7e544d948bd68fc36ca05554, type: 3}
+  - roomType: 1
+    prefab: {fileID: 2295274854166844050, guid: 36a74cd66a6acdd4f9d757a8c98d0459, type: 3}
+  - roomType: 2
+    prefab: {fileID: 7515769236090464075, guid: 7677dc658f486224d8635780fa95ae0b, type: 3}
+  - roomType: 3
+    prefab: {fileID: 8770294471955974853, guid: bfc02565b7165e6498bf7d5883288289, type: 3}
+  - roomType: 4
+    prefab: {fileID: 7802274691361132490, guid: 00b485d1d70388843a1fda556249cd0b, type: 3}
 --- !u!1 &1690785262
 GameObject:
   m_ObjectHideFlags: 0
