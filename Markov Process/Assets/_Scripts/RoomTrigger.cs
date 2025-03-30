@@ -11,6 +11,7 @@ public class RoomTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             DungeonManager dungeonManager = FindObjectOfType<DungeonManager>();
+
             if (dungeonManager != null)
             {
                 dungeonManager.PlayerEnteredNewRoom(roomType);

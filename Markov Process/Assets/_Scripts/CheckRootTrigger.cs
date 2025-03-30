@@ -14,6 +14,8 @@ public class CheckRootTrigger : MonoBehaviour
             if (dungeonManager != null)
             {
                 dungeonManager.GenerateNextRoom(isHardRoute);
+
+                other.GetComponent<PlayerController>().MoveControlSwitch(false);
             }
             else
             {

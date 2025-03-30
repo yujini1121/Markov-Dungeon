@@ -56,6 +56,8 @@ public class DungeonManager : MonoBehaviour
             currentRoomInstance = Instantiate(roomPrefab.prefab, newRoomPosition, Quaternion.identity);
             Debug.Log($"새 방 생성됨: {nextRoomType}, 루트: {(isHardRoute ? "어려운" : "쉬운")}");
 
+            GameObject.Find("Virtual Camera").GetComponent<CameraController>().CameraMove();
+
             // 방이 생성되면 Spawn Point 위치를 y좌표로 +15만큼 이동
             nextRoomSpawnPoint.position = new Vector3(nextRoomSpawnPoint.position.x, nextRoomSpawnPoint.position.y + 15f, nextRoomSpawnPoint.position.z);
 
