@@ -28,7 +28,6 @@ public class CameraController : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log(cameraTarget.position.y - transform.position.y);
             if (cameraTarget.position.y - transform.position.y < threshold)
             {
                 break;

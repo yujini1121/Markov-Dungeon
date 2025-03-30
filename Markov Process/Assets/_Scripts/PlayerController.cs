@@ -26,16 +26,6 @@ public class PlayerController : MonoBehaviour
 
             // 입력에 따른 방향 계산
             movement = new Vector2(moveX, moveY).normalized;
-
-            //// 애니메이션 설정
-            //if (Mathf.Abs(moveX) > Mathf.Epsilon)  // 움직이고 있다면
-            //{
-            //    animator.SetInteger("AnimState", 1);  // Run 상태
-            //}
-            //else  // 멈췄다면
-            //{
-            //    animator.SetInteger("AnimState", 0);  // Idle 상태
-            //}
         }
         else
         {
