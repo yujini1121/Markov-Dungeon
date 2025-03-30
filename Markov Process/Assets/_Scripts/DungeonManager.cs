@@ -20,9 +20,9 @@ public enum RoomType
 public class DungeonManager : MonoBehaviour
 {
     public Transform nextRoomSpawnPoint;  // 방 생성 위치를 지정할 빈 게임 오브젝트
+    public RoomType currentRoom = RoomType.EmptyRoom;
     public List<RoomPrefab> roomPrefabs;
     private GameObject currentRoomInstance;
-    private RoomType currentRoom = RoomType.EmptyRoom;
     private bool? currentRoute = null;  // 루트 선택을 나타내는 변수. true = 쉬운 루트, false = 어려운 루트
 
     private Dictionary<RoomType, Dictionary<RoomType, float>> easyRouteProbabilities = new Dictionary<RoomType, Dictionary<RoomType, float>>()
