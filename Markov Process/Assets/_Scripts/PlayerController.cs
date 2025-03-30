@@ -2,6 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Windows;
 
+/* 
+    이 스크립트는 플레이어의 이동을 제어하는 역할을 합니다.  
+    WASD 및 방향키 입력을 받아 이동하며,  
+    특정 상황(다음 방으로 이동할 때)에서 이동을 제한할 수 있습니다.
+*/
+
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;

@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* 
+    이 스크립트는 던전의 방을 관리하는 시스템 스크립트입니다.  
+    현재 방의 유형을 저장하고, 선택한 루트에 따라 확률적으로 다음 방을 생성합니다.  
+    또한 현재 방의 위치를 계속 갱신합니다.
+*/
+
 public enum RoomType
 {
     EmptyRoom,
@@ -51,7 +57,7 @@ public class DungeonManager : MonoBehaviour
         RoomPrefab roomPrefab = roomPrefabs.Find(r => r.roomType == nextRoomType);
         if (roomPrefab != null)
         {
-            // 기존 방을 파괴하지 않고 새로운 방을 생성
+            // 새로운 방을 생성
             Vector3 newRoomPosition = nextRoomSpawnPoint.position;  // 현재 위치에서 방 생성
             currentRoomInstance = Instantiate(roomPrefab.prefab, newRoomPosition, Quaternion.identity);
             Debug.Log($"새 방 생성됨: {nextRoomType}, 루트: {(isHardRoute ? "어려운" : "쉬운")}");
